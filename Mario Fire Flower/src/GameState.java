@@ -33,7 +33,7 @@ import org.newdawn.slick.tiled.TiledMap;
 public class GameState extends BasicGameState{
 
 	private static final int DELAY1 = 2000;
-	private static final int SHOTDELAY = 500;
+	private static final int SHOTDELAY = 300;
 	private int elapsedTime = 0;
 	private int elapsedShotTime = 3001;
 	int stateID, shotCount, enemyCount, shotDelay;
@@ -308,7 +308,7 @@ public class GameState extends BasicGameState{
 		elapsedShotTime += delta;
 		if (elapsedShotTime >= SHOTDELAY)
 		{
-			if(input.isKeyDown(Input.KEY_SPACE)&&input.isKeyDown(Input.KEY_UP)&&(right))
+			if((input.isKeyDown(Input.KEY_SPACE) || input.isButton1Pressed(0)) &&(input.isKeyDown(Input.KEY_UP) || input.isControllerUp(0))&&(right))
 			{
 				fireballFX.play();
 				fireballs.add(new fireBall("upRight"));
@@ -317,7 +317,7 @@ public class GameState extends BasicGameState{
 				elapsedShotTime = 0;
 				shooting = true;
 			}
-			else if(input.isKeyDown(Input.KEY_SPACE)&&input.isKeyDown(Input.KEY_UP)&&(left))
+			else if((input.isKeyDown(Input.KEY_SPACE) || input.isButton1Pressed(0)) &&(input.isKeyDown(Input.KEY_UP) || input.isControllerUp(0))&&(left))
 			{
 				fireballFX.play();
 				fireballs.add(new fireBall("upLeft"));
@@ -326,7 +326,7 @@ public class GameState extends BasicGameState{
 				elapsedShotTime = 0;
 				shooting = true;
 			}
-			else if(input.isKeyDown(Input.KEY_SPACE)&&(right))
+			else if((input.isKeyDown(Input.KEY_SPACE) || input.isButton1Pressed(0)) &&(right))
 			{
 				fireballFX.play();
 				fireballs.add(new fireBall("right"));
@@ -335,7 +335,7 @@ public class GameState extends BasicGameState{
 				elapsedShotTime = 0;
 				shooting = true;
 			}
-			else if(input.isKeyDown(Input.KEY_SPACE)&&(left))
+			else if((input.isKeyDown(Input.KEY_SPACE) || input.isButton1Pressed(0)) &&(left))
 			{
 				fireballFX.play();
 				fireballs.add(new fireBall("left"));
@@ -347,7 +347,7 @@ public class GameState extends BasicGameState{
 		}
 		
 		
-		if(input.isKeyDown(Input.KEY_DOWN))
+		if(input.isKeyDown(Input.KEY_DOWN) || input.isControllerDown(0))
 		{
 			moving = false;
 			crouched = true;
@@ -361,6 +361,7 @@ public class GameState extends BasicGameState{
 		}
 		else if(jumping)
 		{
+			if(((int)(((marioBound.getY()+player.standRight().getHeight())-(marioLift*delta))/32) < 19) && (int)marioBound.getX()/32 > -1){
 			if (ground[(int)marioBound.getX()/32][((int)(((marioBound.getY()+player.standRight().getHeight())-(marioLift*delta))/32))] != true)
 			{
 				marioBound.setY(marioBound.getY()-marioLift*delta);
@@ -368,14 +369,15 @@ public class GameState extends BasicGameState{
 			}
 			else
 				jumping = false;
+			}
 		}
-		if(input.isKeyPressed(Input.KEY_UP) && !jumping)
+		if(input.isKeyPressed(Input.KEY_UP) || input.isButton2Pressed(0) && !jumping)
 		{
 			jumping = true;
 			jumpFX.play();
 			marioLift = 0.6f;
 		}
-		if(input.isKeyDown(Input.KEY_RIGHT) && !crouched)
+		if(input.isKeyDown(Input.KEY_RIGHT) || input.isControllerRight(0) && !crouched)
 		{
 			left = false;
 			right = true;
@@ -383,7 +385,7 @@ public class GameState extends BasicGameState{
 			marioBound.setX(marioBound.getX()+hip);
 			mapX -= hip;
 		}
-		else if(input.isKeyDown(Input.KEY_LEFT) || input.isControllerLeft(1) && !crouched && marioBound.getX() > 0)
+		else if(input.isKeyDown(Input.KEY_LEFT) || input.isControllerLeft(0) && !crouched && marioBound.getX() > 0)
 		{
 			right = false;
 			left = true;
