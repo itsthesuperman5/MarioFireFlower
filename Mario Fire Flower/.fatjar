@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Thu Apr 11 14:30:37 EDT 2013
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=Mario Fire Flower_fat.jar
+manifest.mergeall=true
+manifest.mainclass=
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=

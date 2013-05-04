@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="336" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="watertiles" tilewidth="16" tileheight="16">
+  <image source="watertiles.png" width="543" height="324"/>
+  <tile id="23">
+   <properties>
+    <property name="floor" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="336" height="30" visible="0" opacity="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2VuSgyAQBdAsI/tf6fwmqUlEGqEbz6ny0wdgXxAfDwAAAAAAAAAAAAAAAIDvnh8HAOfJT4A+8hOgj/yEfX3u1an3sfQp1PZfRn7LS7U+nj6Fus7Ur1ofT59Cfq1rzJZrMI4+hfxG1ahah3f+EewjusZsuT7c2a/6OvqfIGNzu3psjD13cGX+qaEcVsxr5s86Rux1nz0/+k7OXLMdrSGvon7my/QdIEPHaf3e6z0i9+p91mj7ZvbTCmqnXcbxi6r63JX1rB13VrmNu2XC6Dmren8c2bFNkEGF7Ihmftbvgll2bx9k8Jols3OmWr5VyuTW5xrVnp6+uWq/LNM4cG+j3s8d3/MKbWjdyzh7bub8Wn1/+MWaoI5oflYcz8j8DitVqK87ieRnVa1trjIfAGvc8dsg0uY/chwm6Q==
+  </data>
+ </layer>
+ <imagelayer name="Image Layer 1" width="336" height="30" visible="0">
+  <image source="junglehijinks.png"/>
+ </imagelayer>
+</map>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="625" height="19" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="customTiles" tilewidth="32" tileheight="32">
+  <image source="customTiles.png" width="1184" height="384"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="232">
+   <properties>
+    <property name="ground" value="true"/>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="233">
+   <properties>
+    <property name="ground" value="true"/>
+   </properties>
+  </tile>
+  <tile id="234">
+   <properties>
+    <property name="ground" value="true"/>
+   </properties>
+  </tile>
+  <tile id="235">
+   <properties>
+    <property name="ground" value="true"/>
+   </properties>
+  </tile>
+  <tile id="236">
+   <properties>
+    <property name="ground" value="true"/>
+   </properties>
+  </tile>
+  <tile id="237">
+   <properties>
+    <property name="ground" value="true"/>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="269">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="274">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="306">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="311">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="343">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="348">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="380">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="385">
+   <properties>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="417">
+   <properties>
+    <property name="ceiling" value="true"/>
+    <property name="wall" value="true"/>
+   </properties>
+  </tile>
+  <tile id="418">
+   <properties>
+    <property name="ceiling" value="true"/>
+   </properties>
+  </tile>
+  <tile id="419">
+   <properties>
+    <property name="ceiling" value="true"/>
+   </properties>
+  </tile>
+  <tile id="420">
+   <properties>
+    <property name="ceiling" value="true"/>
+   </properties>
+  </tile>
+  <tile id="421">
+   <properties>
+    <property name="ceiling" value="true"/>
+   </properties>
+  </tile>
+  <tile id="422">
+   <properties>
+    <property name="ceiling" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="445" name="bg1" tilewidth="32" tileheight="32">
+  <image source="bg1.png" width="712" height="600"/>
+ </tileset>
+ <layer name="Tile Layer 2" width="625" height="19">
+  <data encoding="base64" compression="zlib">
+   eJzt1ufXlwMcx/H7/t1I0iAzpSJSESmpNFQa9t5777333nvvvffeigYttJEoCUkZKZKWVw/8B3Su+3c+73NeTz/nOteD73UNrKyoGMRgPuQjhjCUYQxnBB/zCZ8yklGMZgz96M/7fMAABmb3P9tdms9c3d5Ndv/f3ZRSSsWtun1Tspvd7OYfLqWUUkXFWHd6HOP5jM/5ggl8yUS+4msmMZlvmMK3TOU7vucHpvFjZXazm91y2E0ppVTcprvTPzGDmfzML/zKb8zid2Yzhz/4k7n8xTz+Zj4LWMiiyuxmN7vlsJtSSqm4LV5yp0sVFZWUqGIZlmU5arA8NVmBWqxIbepQl3qsxMrUZ5VSdrOb3XLYTSmlVNxWdadXY3XWYE0asBYNacTaNKYJTVmHdWnGeqxPczagBS1L2c1udsthN6WUUnFr5U5vyEa0ZmM2oQ2b0pZ2bEZ7NqcDHenEFnSmC13pxpal7GY3u+Wwm1JKqbh1d6d70JOt6EVv+tCXrdmGbdmO7dmBHdmJndmFXdmN3dmjlN3sZrccdlNKKRW3Pd3pvdibfdiX/difAziQgziYQziUwzicIziSoziaYziW40rZzW52y2E3pZRScTvenT6BEzmJkzmFUzmN0zmDMzmLszmHczmP87mAC7mIi7mklN3sZrccdlNKKRW3S93py7icK7iSq7iaa7iW67ieG7iRm7iZW7iV27idO7iTu0pLZ/ffqsvzZje71W03pZRScbvbnb6He7mP+3mAB3mIh3mER3mMx3mCJ3mKp3mGZ3mO53mhlN3sZrccdlNKKRW3F93pl3iZV3iV13idN3iTt3ibd3iX9+hHf97nAwYwkEEMLmU3u9kth92UUkrF7UN3+iOGMJRhDGcEH/MJnzKSUYxmDGMZx3g+43O+YAJflrKb3eyWw25KKaXiNtGd/oqvmcRkvmEK3zKV7/ieH5jGj0znJ2Ywk5/5hV/5rZTd7Ga3HHZTSikVt1nu9O/MZg5/8Cdz+Yt5/M18FrCQRSxect+rKioqKVHFMizLclXZzW52y2E3pZRScavhTi9PTVagFitSmzrUpR4rsTL1WYVVWY3VWYM1acBaNKzKbnazWw67KaWUilsjd3ptGtOEpqzDujRjPdanORvQgpa0YkM2ojUbswlt2LQqu9nNbjnsppRSKm5t3el2bEZ7NqcDHenEFnSmC13pxpZ0pwc92Ype9KYPfauym93slsNuSiml4vYPEdIiKw==
+  </data>
+ </layer>
+ <layer name="Tile Layer 1" width="625" height="19">
+  <data encoding="base64" compression="zlib">
+   eJzt3e1x00AUhWEtFGBJlMBnA2TSApQAQwvQAy1AKXwkpUCAAmyLEoDdie7o6LJGFiOPJc37zGyuY+0qcn6d2dXKPwsAAAAszatw7isAAADAWJdkOAAAgMV5S4YDAABYHObhAAAAlmdt98Pt2rZtW9M2AACANbm3sgxXxs9Thdu6kQYAALAma7sf7mm4bSnH1WQ4AACwUkvMcLZe2ki19dIy9Ofi7DUAAMCaLDHD2dxamZlrs9dV6L9O0v1x++Lv3AcAALA0S8xwNsdm66Z1+7sdqw/Mwx3KfQAAAEuzxH2plt10Ps4ynOY3f0z3OdRtw3gfY/sk9Zi+AABgWnN+Ppw9G8TWP3ft+7rftJJMlpT/OFa5NdZyxp89fdb9uS9CaBb7GtuNVJ/Tcn0BAMC05pzhbK5M10ft/UqarpdWkt/qTIYrZdwc5+Esu81hL8ahLPY7/Qhd9Tkt1xcAAExrzhnO5zSda/NrpbqWqve7+Tk6Oza3DKfZzdaKL85wfUO5LXkQ68PQVZ/Tcn0BAMC0TvWM35RHtq76NVG1zRy3nKXN3tccZhnPj/HP+NW8V4V57Gnw824pu734jwz3oejy1+fYrmK7PnLsmNyWPIv1eeiqz2m5vgAAYFqn2tOg65V6H5rOpx3qr/Nmek+bZrg69O9t28ixMvO3dZztYz1nhstlt4s2v+Uy3FBG+1J0+etbbN9j+1EcN35Mbktex/omdNXntFxfAAAwrVNnOM1tlp1y93n5PaN6Dh2faG7TcTrGZ8jEr6OeI8NZdrOM5mvKby8zGW4oo/0quvwVYrsT290jx4/Jbcm7WN+HrvqclusLAACmldYw7Zm3e6l7OabPxLXvks+dJ7du2sg5dtKnKfrfSW+ZytY6dU9qI+fZFv3vtM89t1fzos77beT9Rq5H/4a/tq302xX967Jxeh79jPq/s+OWYS2rDVUzlNHuhy5/PYrtcWxPjhw/JrclV7Feh676nJbrCwAApvUHNhjxKA==
+  </data>
+ </layer>
+ <layer name="ground" width="625" height="19">
+  <data encoding="base64" compression="zlib">
+   eJzt3EEKwCAMBMD2/5/uvWCLUTFtZsCTINHTYiDHAQAAAAAAAAAAAAAAwKizsQAAAAAAAAD+Tr8UAKAOuQ8AAAAA+Iqev0z/nQBQT+XeZ7b7PtVz38tWOwDAapnyT6ZaAAAyypKXstQBAOzRmv/Rygh6pnPOibxjtTcHAIjqzU2jM/HM1AMAiJOdAIAZ3nqe0V7ozvNW3nvGAgAYdQGwlgCf
+  </data>
+ </layer>
+</map>
