@@ -6,6 +6,7 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import org.lwjgl.input.Controller;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -52,6 +53,7 @@ public class GameState extends BasicGameState{
 	boolean left, right, moving, crouched, jumping, shooting;
 	boolean shotLeft, shotRight, shotUpRight, shotUpLeft;
 	boolean falling;
+	boolean drawRectangles;
 	boolean[][] ground;
 	Rectangle[][] rect;
 	Shape[] shape;
@@ -70,7 +72,6 @@ public class GameState extends BasicGameState{
 	public void enter(GameContainer gc, StateBasedGame sbg)
 	{
 		overworld.loop();
-		//overworld.play();
 	}
 	
 	
@@ -91,6 +92,7 @@ public class GameState extends BasicGameState{
 		shotUpLeft = false;
 		shotRight = false;
 		falling = false;
+		drawRectangles = false;
 		marioVelocity = 0.3f;
 		enemyVelocity = 0.25f;
 		marioLift = 0;
@@ -115,7 +117,7 @@ public class GameState extends BasicGameState{
 		capes = new ArrayList<capeGuy>();
 		fireballs = new ArrayList<fireBall>();
 		shotBound = new ArrayList<Rectangle>();
-		marioBound = new Rectangle(300, 300, player.standRight().getWidth(), player.standRight().getHeight());
+		marioBound = new Rectangle(300, 300, player.standRight().getWidth()-32, player.standRight().getHeight());
 		ground = new boolean[map.getWidth()][map.getHeight()];
 		rect = new Rectangle[map.getWidth()][map.getHeight()];
 		shape = new Shape[10000];
@@ -142,54 +144,72 @@ public class GameState extends BasicGameState{
 		// TODO Auto-generated method stub
 		map.render((int)mapX, (int)mapY, 0);
 		map.render((int)mapX, (int)mapY, 1);
+		if(drawRectangles)
+		{
+			g.draw(marioBound);
+			if(!enemyBound.isEmpty())
+			{
+				for(int i = 0; i < capes.size(); i++)
+				{
+					g.draw(enemyBound.get(i));
+				}
+			}
+			if(!shotBound.isEmpty())
+			{
+				for(int i = 0; i < shotBound.size(); i++)
+				{
+					g.draw(shotBound.get(i));
+				}
+			}
+		}
 		if(!capes.isEmpty())
 		{
 			for(int i = 0; i < capes.size(); i++)
 			{
 				if(enemyBound.get(i).getX() >= marioBound.getX())
-					capes.get(i).getLeft().draw(enemyBound.get(i).getX()+mapX, enemyBound.get(i).getY()+mapY);
+					capes.get(i).getLeft().draw(enemyBound.get(i).getX()+mapX, enemyBound.get(i).getY()+mapY-16);
 				else
-					capes.get(i).getRight().draw(enemyBound.get(i).getX()+mapX, enemyBound.get(i).getY()+mapY);
+					capes.get(i).getRight().draw(enemyBound.get(i).getX()+mapX, enemyBound.get(i).getY()+mapY-16);
 			}
 		}
 		if(shooting)
 		{
 			for(int i = 0; i < fireballs.size(); i++)
 			{
-				fireballs.get(i).getFireball().draw(shotBound.get(i).getX()+mapX, shotBound.get(i).getY()+mapY);
+				fireballs.get(i).getFireball().draw(shotBound.get(i).getX()+mapX, shotBound.get(i).getY()+mapY-16);
 			}
 		}
 		if(jumping && right)
 		{
-			player.rightJump().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.rightJump().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 		else if(jumping && left)
 		{
-			player.leftJump().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.leftJump().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 		else if(crouched && right)
 		{
-			player.rightCrouch().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.rightCrouch().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 		else if(crouched && left)
 		{
-			player.leftCrouch().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.leftCrouch().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 		else if(!moving && right)
 		{
-			player.standRight().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.standRight().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 		else if(!moving && left)
 		{
-			player.standLeft().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.standLeft().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 		else if(moving && right)
 		{
-			player.rightWalk().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.rightWalk().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 		else if(moving && left)
 		{
-			player.leftWalk().draw(marioBound.getX()+mapX, marioBound.getY()+mapY);
+			player.leftWalk().draw(marioBound.getX()+mapX-16, marioBound.getY()+mapY);
 		}
 	}
 
@@ -246,6 +266,13 @@ public class GameState extends BasicGameState{
 				}
 			}
 		}
+		if(input.isKeyPressed(Input.KEY_R))
+		{
+			if(!drawRectangles)
+				drawRectangles = true;
+			else
+				drawRectangles = false;
+		}
 		if(!jumping && !hitShape(marioBound, shape))
 		{
 			marioBound.setY(marioBound.getY()+fhip);
@@ -286,7 +313,7 @@ public class GameState extends BasicGameState{
 				fireballFX.play();
 				fireballs.add(new fireBall("upRight"));
 				shotBound.add(new Rectangle(marioBound.getCenterX(), marioBound.getY(),
-						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()));
+						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()-32));
 				elapsedShotTime = 0;
 				shooting = true;
 			}
@@ -295,7 +322,7 @@ public class GameState extends BasicGameState{
 				fireballFX.play();
 				fireballs.add(new fireBall("upLeft"));
 				shotBound.add(new Rectangle(marioBound.getCenterX(), marioBound.getY(),
-						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()));
+						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()-32));
 				elapsedShotTime = 0;
 				shooting = true;
 			}
@@ -304,7 +331,7 @@ public class GameState extends BasicGameState{
 				fireballFX.play();
 				fireballs.add(new fireBall("right"));
 				shotBound.add(new Rectangle(marioBound.getCenterX(), marioBound.getY(),
-						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()));
+						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()-32));
 				elapsedShotTime = 0;
 				shooting = true;
 			}
@@ -313,7 +340,7 @@ public class GameState extends BasicGameState{
 				fireballFX.play();
 				fireballs.add(new fireBall("left"));
 				shotBound.add(new Rectangle(marioBound.getCenterX(), marioBound.getY(),
-						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()));
+						fireball.getFireImage().getWidth(), fireball.getFireImage().getHeight()-32));
 				elapsedShotTime = 0;
 				shooting = true;
 			}
@@ -356,7 +383,7 @@ public class GameState extends BasicGameState{
 			marioBound.setX(marioBound.getX()+hip);
 			mapX -= hip;
 		}
-		else if(input.isKeyDown(Input.KEY_LEFT) && !crouched && marioBound.getX() > 0)
+		else if(input.isKeyDown(Input.KEY_LEFT) || input.isControllerLeft(1) && !crouched && marioBound.getX() > 0)
 		{
 			right = false;
 			left = true;
@@ -398,10 +425,10 @@ public class GameState extends BasicGameState{
 		switch(rand.nextInt(2))
 		{
 		case 0 :
-			enemyBound.add(new Rectangle(marioBound.getX()+500, rand.nextInt(600)+mapY, capes.get(0).getRight().getWidth(), capes.get(0).getRight().getHeight()));
+			enemyBound.add(new Rectangle(marioBound.getX()+500, rand.nextInt(600)+mapY, capes.get(0).getRight().getWidth(), capes.get(0).getRight().getHeight()-32));
 			break;
 		case 1 :
-			enemyBound.add(new Rectangle(marioBound.getX()-350, rand.nextInt(600)+mapY, capes.get(0).getRight().getWidth(), capes.get(0).getRight().getHeight()));
+			enemyBound.add(new Rectangle(marioBound.getX()-350, rand.nextInt(600)+mapY, capes.get(0).getRight().getWidth(), capes.get(0).getRight().getHeight()-32));
 			break;
 		}
 		

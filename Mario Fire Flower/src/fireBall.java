@@ -22,7 +22,7 @@ public class fireBall
 	
 	public fireBall(String dir) throws SlickException
 	{
-		fireball = new SpriteSheet("res/fireball.png", 10, 20);
+		fireball = new SpriteSheet("res/fireball.png", 11, 20);
 		fire1 = fireball.getSprite(0, 0);
 		fire1a = fire1.getScaledCopy(2);
 		fire2 = fireball.getSprite(1, 0);
