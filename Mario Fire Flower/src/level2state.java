@@ -1,15 +1,6 @@
-
-
-
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.Timer;
-
-import org.lwjgl.input.Controller;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,7 +8,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -34,8 +24,8 @@ import org.newdawn.slick.tiled.TiledMap;
  * @author stephenwright
  *
  */
-public class GameState extends BasicGameState{
-
+public class level2state extends BasicGameState{
+	
 	private static final int DELAY1 = 2000;
 	private static final int SHOTDELAY = 400;
 	private int initialDelay = 5000;
@@ -76,7 +66,7 @@ public class GameState extends BasicGameState{
 	private boolean victoryPlayed;
 	private Music victory;
 	
-	public GameState(int stateID)
+	public level2state(int stateID)
 	{
 		this.stateID = stateID;
 	}
@@ -139,7 +129,7 @@ public class GameState extends BasicGameState{
 		fireballFX = new Sound("res/fireball.wav");
 		jumpFX = new Sound("res/jump.wav");
 		hitFX = new Sound("res/hit.wav");
-		map = new TiledMap("res/test.tmx");
+		map = new TiledMap("res/level2.tmx");
 		overworld = new Music("res/overworld.wav");
 		playerX = 300; 
 		playerY = 300;
@@ -151,7 +141,7 @@ public class GameState extends BasicGameState{
 		capes = new ArrayList<capeGuy>();
 		fireballs = new ArrayList<fireBall>();
 		shotBound = new ArrayList<Rectangle>();
-		marioBound = new Rectangle(300, 300, player.standRight().getWidth()-32, player.standRight().getHeight());
+		marioBound = new Rectangle(playerX, playerY, player.standRight().getWidth()-32, player.standRight().getHeight());
 		ground = new boolean[map.getWidth()][map.getHeight()];
 		rect = new Rectangle[map.getWidth()][map.getHeight()];
 		baddyGrid = new boolean[map.getWidth()][map.getHeight()];
@@ -195,9 +185,9 @@ public class GameState extends BasicGameState{
 			g.setColor(org.newdawn.slick.Color.black);
 			g.fillRect(10, 10, 700, 100);
 			g.setColor(org.newdawn.slick.Color.white);
-			g.drawString("Welcome to Mario Fire Flower!", 50, 25);
-			g.drawString("Button 1 to fire. Button 2 to jump.", 50, 50);
-			g.drawString("Shoot all the enemies and get to the end of the level.", 50, 75);
+			g.drawString("Wow you did really well on that first level.", 50, 25);
+			g.drawString("How about a short level of all pipes?", 50, 50);
+			g.drawString("Don't work too hard.", 50, 75);
 		}
 		if(drawRectangles)
 		{
@@ -272,10 +262,10 @@ public class GameState extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		if(marioBound.getY()/32 >= 17)
-		{
-			playerDead = true;
-		}
+		if(mapX < 0)
+			//mapX = 0;
+		if(mapX > (map.getWidth()*32))
+			mapX = map.getWidth()*32;
 		if (initialDelay > 0)
 		{
 			initialDelay -= delta;
@@ -294,7 +284,7 @@ public class GameState extends BasicGameState{
 		  {
 			  sbg.enterState(9, new FadeOutTransition(), new FadeInTransition());
 		  }
-		  if(!playerDead && endGrid[(int)marioBound.getCenterX()/32][(int)marioBound.getCenterY()/32])
+		  if(!playerDead && endGrid[(int)marioBound.getCenterX()/32][((int)marioBound.getCenterY()+16)/32])
 			{
 				victorious = true;
 			}
@@ -323,16 +313,10 @@ public class GameState extends BasicGameState{
 		float ship = spitVelocity*delta;
 		float fhip = marioFall*delta;
 		float eip = enemyVelocity*delta;
-		/*
-		if(input.isKeyPressed(Input.KEY_2))
-			sbg.enterState(2);
-		if(input.isKeyPressed(Input.KEY_3))
-			sbg.enterState(3);
-		if(input.isKeyPressed(Input.KEY_4))
-			sbg.enterState(4);
-		if(input.isKeyPressed(Input.KEY_5))
-			sbg.enterState(5);*/
-		
+		if(marioBound.getY()/32 >= 18)
+		{
+			playerDead = true;
+		}
 		if(fireballs.isEmpty() || shotBound.isEmpty())
 			shooting = false;
 		if(!enemyBound.isEmpty())
@@ -460,10 +444,6 @@ public class GameState extends BasicGameState{
 		}
 		else if(jumping)
 		{
-			if(marioBound.getY()/32 >= 17)
-			{
-				playerDead = true;
-			}
 			if(!playerDead){
 			if (ground[(int)marioBound.getX()/32][((int)(((marioBound.getY()+player.standRight().getHeight())-(marioLift*delta))/32))] != true)
 			{
@@ -528,15 +508,8 @@ public class GameState extends BasicGameState{
 
 	public void sendEnemy() throws SlickException{
 		capes.add(new capeGuy());
-		switch(rand.nextInt(2))
-		{
-		case 0 :
 			enemyBound.add(new Rectangle(marioBound.getX()+500, rand.nextInt(600)+mapY, capes.get(0).getRight().getWidth(), capes.get(0).getRight().getHeight()-32));
-			break;
-		case 1 :
-			enemyBound.add(new Rectangle(marioBound.getX()-350, rand.nextInt(600)+mapY, capes.get(0).getRight().getWidth(), capes.get(0).getRight().getHeight()-32));
-			break;
-		}
 		
 	}
+
 }

@@ -1,15 +1,6 @@
-
-
-
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.Timer;
-
-import org.lwjgl.input.Controller;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,7 +8,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -26,16 +16,8 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
 
-/**
- * 
- */
 
-/**
- * @author stephenwright
- *
- */
-public class GameState extends BasicGameState{
-
+public class level4state extends BasicGameState{
 	private static final int DELAY1 = 2000;
 	private static final int SHOTDELAY = 400;
 	private int initialDelay = 5000;
@@ -70,13 +52,13 @@ public class GameState extends BasicGameState{
 	private float enemyVelocity;
 	private Random rand;
 	private boolean[][] endGrid;
-	private boolean[][] baddyGrid;
+	private boolean[][] lavaGrid;
 	private boolean playerDead;
 	private boolean victorious;
 	private boolean victoryPlayed;
 	private Music victory;
 	
-	public GameState(int stateID)
+	public level4state(int stateID)
 	{
 		this.stateID = stateID;
 	}
@@ -90,7 +72,7 @@ public class GameState extends BasicGameState{
 		victoryPlayed = false;
 		mapX = 0;
 		mapY = 0;
-		marioBound.setX(300);
+		marioBound.setX(100);
 		marioBound.setY(300);
 	}
 	
@@ -139,9 +121,9 @@ public class GameState extends BasicGameState{
 		fireballFX = new Sound("res/fireball.wav");
 		jumpFX = new Sound("res/jump.wav");
 		hitFX = new Sound("res/hit.wav");
-		map = new TiledMap("res/test.tmx");
-		overworld = new Music("res/overworld.wav");
-		playerX = 300; 
+		map = new TiledMap("res/level4.tmx");
+		overworld = new Music("res/boss.wav");
+		playerX = 100; 
 		playerY = 300;
 		mapX = 0;
 		mapY = 0;
@@ -151,10 +133,10 @@ public class GameState extends BasicGameState{
 		capes = new ArrayList<capeGuy>();
 		fireballs = new ArrayList<fireBall>();
 		shotBound = new ArrayList<Rectangle>();
-		marioBound = new Rectangle(300, 300, player.standRight().getWidth()-32, player.standRight().getHeight());
+		marioBound = new Rectangle(playerX, playerY, player.standRight().getWidth()-32, player.standRight().getHeight());
 		ground = new boolean[map.getWidth()][map.getHeight()];
 		rect = new Rectangle[map.getWidth()][map.getHeight()];
-		baddyGrid = new boolean[map.getWidth()][map.getHeight()];
+		lavaGrid = new boolean[map.getWidth()][map.getHeight()];
 		endGrid = new boolean[map.getWidth()][map.getHeight()];
 		shape = new Shape[10000];
 		for (int x=0;x<map.getWidth();x++) 
@@ -164,7 +146,7 @@ public class GameState extends BasicGameState{
 				int tileID = map.getTileId(x, y, 2);
 				String value = map.getTileProperty(tileID, "blocked", "false");
 				String value1 = map.getTileProperty(tileID, "end", "false");
-				String value2 = map.getTileProperty(tileID, "baddy", "false");
+				String value2 = map.getTileProperty(tileID, "lava", "false");
 				if ("true".equals(value))
 				{
 					ground[x][y] = true;
@@ -178,7 +160,7 @@ public class GameState extends BasicGameState{
 				}
 				if("true".equals(value2))
 				{
-					baddyGrid[x][y] = true;
+					lavaGrid[x][y] = true;
 				}
 			}
 		}
@@ -195,9 +177,9 @@ public class GameState extends BasicGameState{
 			g.setColor(org.newdawn.slick.Color.black);
 			g.fillRect(10, 10, 700, 100);
 			g.setColor(org.newdawn.slick.Color.white);
-			g.drawString("Welcome to Mario Fire Flower!", 50, 25);
-			g.drawString("Button 1 to fire. Button 2 to jump.", 50, 50);
-			g.drawString("Shoot all the enemies and get to the end of the level.", 50, 75);
+			g.drawString("You're doing really good!", 50, 25);
+			g.drawString("You're almost to Bowser.", 50, 50);
+			g.drawString("Your reward will be to fight a fire-breathing lizard. Congrats.", 50, 75);
 		}
 		if(drawRectangles)
 		{
@@ -272,10 +254,7 @@ public class GameState extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		if(marioBound.getY()/32 >= 17)
-		{
-			playerDead = true;
-		}
+		
 		if (initialDelay > 0)
 		{
 			initialDelay -= delta;
@@ -318,21 +297,18 @@ public class GameState extends BasicGameState{
 				}
 			}
 			else{
+				if(lavaGrid[(int)marioBound.getCenterX()/32][(int)marioBound.getCenterY()/32])
+					playerDead = true;
 		Input input = gc.getInput();
 		float hip = marioVelocity*delta;
 		float ship = spitVelocity*delta;
 		float fhip = marioFall*delta;
 		float eip = enemyVelocity*delta;
-		/*
-		if(input.isKeyPressed(Input.KEY_2))
-			sbg.enterState(2);
-		if(input.isKeyPressed(Input.KEY_3))
-			sbg.enterState(3);
-		if(input.isKeyPressed(Input.KEY_4))
-			sbg.enterState(4);
-		if(input.isKeyPressed(Input.KEY_5))
-			sbg.enterState(5);*/
-		
+		mapX -= .05f * delta;
+		if(marioBound.getY()/32 >= 18)
+		{
+			playerDead = true;
+		}
 		if(fireballs.isEmpty() || shotBound.isEmpty())
 			shooting = false;
 		if(!enemyBound.isEmpty())
@@ -458,12 +434,8 @@ public class GameState extends BasicGameState{
 			marioBound.setY(marioBound.getY()-marioLift*delta);
 			marioLift -= 0.04f;	
 		}
-		else if(jumping)
+		else if(jumping && marioLift < 0)
 		{
-			if(marioBound.getY()/32 >= 17)
-			{
-				playerDead = true;
-			}
 			if(!playerDead){
 			if (ground[(int)marioBound.getX()/32][((int)(((marioBound.getY()+player.standRight().getHeight())-(marioLift*delta))/32))] != true)
 			{
@@ -486,7 +458,7 @@ public class GameState extends BasicGameState{
 			right = true;
 			moving = true;
 			marioBound.setX(marioBound.getX()+hip);
-			mapX -= hip;
+			//mapX -= hip;
 		}
 		else if(input.isKeyDown(Input.KEY_LEFT) || input.isControllerLeft(0) && !crouched && marioBound.getX() > 0)
 		{
@@ -494,7 +466,7 @@ public class GameState extends BasicGameState{
 			left = true;
 			moving = true;
 			marioBound.setX(marioBound.getX()-hip);
-			mapX += hip;
+			//mapX += hip;
 		}
 		else
 			moving = false;

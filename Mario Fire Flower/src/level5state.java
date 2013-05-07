@@ -1,15 +1,6 @@
-
-
-
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.Timer;
-
-import org.lwjgl.input.Controller;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,7 +8,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -34,8 +24,7 @@ import org.newdawn.slick.tiled.TiledMap;
  * @author stephenwright
  *
  */
-public class GameState extends BasicGameState{
-
+public class level5state extends BasicGameState{
 	private static final int DELAY1 = 2000;
 	private static final int SHOTDELAY = 400;
 	private int initialDelay = 5000;
@@ -55,6 +44,8 @@ public class GameState extends BasicGameState{
 	ArrayList<Rectangle> enemyBound;
 	ArrayList<capeGuy> capes;
 	ArrayList<fireBall> fireballs;
+	ArrayList<bowserFire> bowserFire;
+	ArrayList<Rectangle> fireBound;
 	private fireBall fireball;
 	boolean left, right, moving, crouched, jumping, shooting;
 	boolean shotLeft, shotRight, shotUpRight, shotUpLeft;
@@ -70,13 +61,16 @@ public class GameState extends BasicGameState{
 	private float enemyVelocity;
 	private Random rand;
 	private boolean[][] endGrid;
-	private boolean[][] baddyGrid;
-	private boolean playerDead;
+	private boolean[][] lavaGrid;
+	private boolean playerDead, bowserDead, bowserMovingLeft, bowserMovingRight;
 	private boolean victorious;
 	private boolean victoryPlayed;
 	private Music victory;
+	private Image bowserLeft, bowserRight;
+	private Rectangle bowserBound;
+	private int fireDelay, bowserHP;
 	
-	public GameState(int stateID)
+	public level5state(int stateID)
 	{
 		this.stateID = stateID;
 	}
@@ -88,10 +82,17 @@ public class GameState extends BasicGameState{
 		victorious = false;
 		initialString = true;
 		victoryPlayed = false;
+		bowserDead = false;
+		bowserMovingLeft = true;
+		bowserMovingRight = false;
+		fireDelay = 2500;
+		bowserHP = 50;
 		mapX = 0;
 		mapY = 0;
-		marioBound.setX(300);
+		marioBound.setX(100);
 		marioBound.setY(300);
+		bowserBound.setX(900);
+		bowserBound.setY(20);
 	}
 	
 	public void leave(GameContainer gc, StateBasedGame sbg)
@@ -101,6 +102,8 @@ public class GameState extends BasicGameState{
 		enemyBound.clear();
 		capes.clear();
 		fireballs.clear();
+		bowserFire.clear();
+		fireBound.clear();
 	}
 	
 	
@@ -108,6 +111,9 @@ public class GameState extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		// TODO Auto-generated method stub
+		bowserLeft = new Image("res/bowser.png").getScaledCopy(2);
+		bowserRight = bowserLeft.getFlippedCopy(true, false);
+		bowserBound = new Rectangle(900, 20, bowserLeft.getWidth(), bowserLeft.getHeight());
 		victory = new Music("res/marioVictory.wav");
 		playerDead = false;
 		victorious = false;
@@ -139,9 +145,9 @@ public class GameState extends BasicGameState{
 		fireballFX = new Sound("res/fireball.wav");
 		jumpFX = new Sound("res/jump.wav");
 		hitFX = new Sound("res/hit.wav");
-		map = new TiledMap("res/test.tmx");
-		overworld = new Music("res/overworld.wav");
-		playerX = 300; 
+		map = new TiledMap("res/bowserLevel.tmx");
+		overworld = new Music("res/boss.wav");
+		playerX = 100; 
 		playerY = 300;
 		mapX = 0;
 		mapY = 0;
@@ -151,10 +157,12 @@ public class GameState extends BasicGameState{
 		capes = new ArrayList<capeGuy>();
 		fireballs = new ArrayList<fireBall>();
 		shotBound = new ArrayList<Rectangle>();
-		marioBound = new Rectangle(300, 300, player.standRight().getWidth()-32, player.standRight().getHeight());
+		bowserFire = new ArrayList<bowserFire>();
+		fireBound = new ArrayList<Rectangle>();
+		marioBound = new Rectangle(playerX, playerY, player.standRight().getWidth()-32, player.standRight().getHeight());
 		ground = new boolean[map.getWidth()][map.getHeight()];
 		rect = new Rectangle[map.getWidth()][map.getHeight()];
-		baddyGrid = new boolean[map.getWidth()][map.getHeight()];
+		lavaGrid = new boolean[map.getWidth()][map.getHeight()];
 		endGrid = new boolean[map.getWidth()][map.getHeight()];
 		shape = new Shape[10000];
 		for (int x=0;x<map.getWidth();x++) 
@@ -164,7 +172,7 @@ public class GameState extends BasicGameState{
 				int tileID = map.getTileId(x, y, 2);
 				String value = map.getTileProperty(tileID, "blocked", "false");
 				String value1 = map.getTileProperty(tileID, "end", "false");
-				String value2 = map.getTileProperty(tileID, "baddy", "false");
+				String value2 = map.getTileProperty(tileID, "lava", "false");
 				if ("true".equals(value))
 				{
 					ground[x][y] = true;
@@ -178,7 +186,7 @@ public class GameState extends BasicGameState{
 				}
 				if("true".equals(value2))
 				{
-					baddyGrid[x][y] = true;
+					lavaGrid[x][y] = true;
 				}
 			}
 		}
@@ -195,13 +203,23 @@ public class GameState extends BasicGameState{
 			g.setColor(org.newdawn.slick.Color.black);
 			g.fillRect(10, 10, 700, 100);
 			g.setColor(org.newdawn.slick.Color.white);
-			g.drawString("Welcome to Mario Fire Flower!", 50, 25);
-			g.drawString("Button 1 to fire. Button 2 to jump.", 50, 50);
-			g.drawString("Shoot all the enemies and get to the end of the level.", 50, 75);
+			g.drawString("Shoot him!", 50, 25);
+			g.drawString("But don't get burned.", 50, 50);
+			g.drawString("And watch for his cronies!!!", 50, 75);
+		}
+		else
+			g.drawString("Bowser HP: "+bowserHP, 600, 10);
+		if(!bowserDead)
+		{
+			if(bowserMovingLeft)
+				bowserLeft.draw(bowserBound.getX(), bowserBound.getY());
+			else if(bowserMovingRight)
+				bowserRight.draw(bowserBound.getX(), bowserBound.getY());
 		}
 		if(drawRectangles)
 		{
 			g.draw(marioBound);
+			g.draw(bowserBound);
 			if(!enemyBound.isEmpty())
 			{
 				for(int i = 0; i < capes.size(); i++)
@@ -232,6 +250,13 @@ public class GameState extends BasicGameState{
 			for(int i = 0; i < fireballs.size(); i++)
 			{
 				fireballs.get(i).getFireball().draw(shotBound.get(i).getX()+mapX, shotBound.get(i).getY()+mapY-16);
+			}
+		}
+		if(!fireBound.isEmpty())
+		{
+			for(int i = 0; i < fireBound.size(); i++)
+			{
+				bowserFire.get(i).getFireball().draw(fireBound.get(i).getX(), fireBound.get(i).getY());
 			}
 		}
 		if(jumping && right)
@@ -272,10 +297,7 @@ public class GameState extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		if(marioBound.getY()/32 >= 17)
-		{
-			playerDead = true;
-		}
+		
 		if (initialDelay > 0)
 		{
 			initialDelay -= delta;
@@ -290,11 +312,13 @@ public class GameState extends BasicGameState{
 			  elapsedTime = 0;
 			  sendEnemy();
 		  }
+		  if(bowserHP <= 0)
+			  bowserDead = true;
 		  if(playerDead)
 		  {
 			  sbg.enterState(9, new FadeOutTransition(), new FadeInTransition());
 		  }
-		  if(!playerDead && endGrid[(int)marioBound.getCenterX()/32][(int)marioBound.getCenterY()/32])
+		  if(!playerDead && bowserDead)
 			{
 				victorious = true;
 			}
@@ -318,25 +342,74 @@ public class GameState extends BasicGameState{
 				}
 			}
 			else{
+				if(bowserMovingLeft)
+				{
+					bowserBound.setX(bowserBound.getX() - 0.4f*delta);
+					if(bowserBound.getX() < 50)
+					{
+						bowserMovingLeft = false;
+						bowserMovingRight = true;
+					}
+				}
+				else if(bowserMovingRight)
+				{
+					bowserBound.setX(bowserBound.getX() + 0.4f*delta);
+					if(bowserBound.getX() > 800)
+					{
+						bowserMovingRight = false;
+						bowserMovingLeft = true;
+					}
+				}
+				fireDelay -= delta;
+				if(fireDelay < 0)
+				{
+					fireDelay = 1000;
+					this.sendFire();
+				}
+				if(!fireBound.isEmpty())
+				{
+					for(int i = 0; i < fireBound.size(); i++)
+					{
+						fireBound.get(i).setY(fireBound.get(i).getY()+0.2f*delta);
+						if(fireBound.get(i).intersects(marioBound))
+							playerDead = true;
+						if(fireBound.get(i).getY() > 600)
+						{
+							fireBound.remove(i);
+							bowserFire.remove(i);
+						}
+						
+					}
+				}
+				if(lavaGrid[(int)marioBound.getCenterX()/32][(int)marioBound.getCenterY()/32])
+					playerDead = true;
 		Input input = gc.getInput();
 		float hip = marioVelocity*delta;
 		float ship = spitVelocity*delta;
 		float fhip = marioFall*delta;
 		float eip = enemyVelocity*delta;
-		/*
-		if(input.isKeyPressed(Input.KEY_2))
-			sbg.enterState(2);
-		if(input.isKeyPressed(Input.KEY_3))
-			sbg.enterState(3);
-		if(input.isKeyPressed(Input.KEY_4))
-			sbg.enterState(4);
-		if(input.isKeyPressed(Input.KEY_5))
-			sbg.enterState(5);*/
-		
+		if(marioBound.getY()/32 >= 18)
+		{
+			playerDead = true;
+		}
 		if(fireballs.isEmpty() || shotBound.isEmpty())
 			shooting = false;
+		if(shooting)
+		{
+			for(int j = 0; j < shotBound.size(); j++)
+			{
+				if(hitEnemy(bowserBound, shotBound.get(j)))
+				{
+					hitFX.play();
+					shotBound.remove(j);
+					fireballs.remove(j);
+					bowserHP--;
+				}
+			}
+		}
 		if(!enemyBound.isEmpty())
 		{
+			
 			for(int i = 0; i < enemyBound.size(); i++)
 			{
 				if(hitEnemy(enemyBound.get(i), marioBound))
@@ -458,12 +531,8 @@ public class GameState extends BasicGameState{
 			marioBound.setY(marioBound.getY()-marioLift*delta);
 			marioLift -= 0.04f;	
 		}
-		else if(jumping)
+		else if(jumping && marioLift < 0)
 		{
-			if(marioBound.getY()/32 >= 17)
-			{
-				playerDead = true;
-			}
 			if(!playerDead){
 			if (ground[(int)marioBound.getX()/32][((int)(((marioBound.getY()+player.standRight().getHeight())-(marioLift*delta))/32))] != true)
 			{
@@ -486,7 +555,7 @@ public class GameState extends BasicGameState{
 			right = true;
 			moving = true;
 			marioBound.setX(marioBound.getX()+hip);
-			mapX -= hip;
+			//mapX -= hip;
 		}
 		else if(input.isKeyDown(Input.KEY_LEFT) || input.isControllerLeft(0) && !crouched && marioBound.getX() > 0)
 		{
@@ -494,7 +563,7 @@ public class GameState extends BasicGameState{
 			left = true;
 			moving = true;
 			marioBound.setX(marioBound.getX()-hip);
-			mapX += hip;
+			//mapX += hip;
 		}
 		else
 			moving = false;
@@ -526,7 +595,8 @@ public class GameState extends BasicGameState{
 		return hit;
 	}
 
-	public void sendEnemy() throws SlickException{
+	public void sendEnemy() throws SlickException
+	{
 		capes.add(new capeGuy());
 		switch(rand.nextInt(2))
 		{
@@ -538,5 +608,11 @@ public class GameState extends BasicGameState{
 			break;
 		}
 		
+	}
+	
+	public void sendFire() throws SlickException
+	{
+		bowserFire.add(new bowserFire());
+		fireBound.add(new Rectangle(bowserBound.getCenterX(), bowserBound.getCenterY(), 20, 20));
 	}
 }
