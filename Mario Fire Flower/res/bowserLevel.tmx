@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="19" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="backgrounds-1.tsx"/>
+ <tileset firstgid="2145" source="customTiles.tsx"/>
+ <tileset firstgid="2589" source="lava.tsx"/>
+ <layer name="Tile Layer 1" width="30" height="19">
+  <data encoding="base64" compression="zlib">
+   eJzt1MddE2AAxuH8EJIQ6gJcQu/MQAkltBlUkA4ziIICCjPYpTqDCjYUZwgtdEbgWYDTd4TDc/wf3zcTjUT2OeCQI47JcsIpZ5xzwSVXXJMJaHNikcgDcskjSow4+SQooJAiiimhNBbWJimngkqqqKaGWuqop4FGmmimJbBtpY12OkjRSRfd9JCmlz76GWAwsH3IIx4zxDBPGGGUMcaZYJIpppkJbJ8yyzOeM8c8L3jJAoss8YrXLLMS2L7hLe94zwc+8onPrLLGOhtsssWXwPYr3/jONjv84Ce/+M0fdvnLP/b4H9hm2OeAQ444JssJp5xxzgWXXHEd2ObEbZBc8ogSI04+CQoopIhiSiiNh7VJyqmgkiqqqaGWOuppoJEmmmkJbFtpo50OUnTSRTc9pOmlj34GGAxsQz72/p/v//m2tixxt9wAOeToYw==
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="30" height="19">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGF4jkZGCI4aStGDZQB1TTyElbMWxgMVDNMk7aimEDJ4BqTnPSVgwbeAtU84GTtmIwAADDdSHk
+  </data>
+ </layer>
+ <layer name="properties" width="30" height="19">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGF3DnhGBaio1UIMs1sjAADEMMRQ==
+  </data>
+ </layer>
+</map>

@@ -19,7 +19,7 @@ public class MFFdriver extends StateBasedGame{
 	public static final int LEVEL3STATE = 3;
 	public static final int LEVEL4STATE = 4;
 	public static final int LEVEL5STATE = 5;
-	public static final int GAMEOVERSTATE = 6;
+	//public static final int GAMEOVERSTATE = 6;
 	public static final int BETWEENLEVELSTATE = 9;
 	public static int currentState = 1;
 	public static int marioLives = 5;
@@ -50,7 +50,7 @@ public class MFFdriver extends StateBasedGame{
 		this.addState(new level3state(LEVEL3STATE));
 		this.addState(new level4state(LEVEL4STATE));
 		this.addState(new level5state(LEVEL5STATE));
-		this.addState(new gameOver(GAMEOVERSTATE));
+		//this.addState(new gameOver(GAMEOVERSTATE));
 		this.addState(new betweenLevels(BETWEENLEVELSTATE));
 	}
 

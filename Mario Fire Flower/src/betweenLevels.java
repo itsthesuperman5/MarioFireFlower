@@ -19,6 +19,7 @@ public class betweenLevels extends BasicGameState{
 	private int delay1, delay2, stateID;
 	private String string;
 	private boolean nextDelay;
+	private boolean gameOver;
 	
 	public betweenLevels(int stateID)
 	{
@@ -29,6 +30,7 @@ public class betweenLevels extends BasicGameState{
 	public void enter(GameContainer arg0, StateBasedGame arg1)
 	{
 		nextDelay = false;
+		gameOver = false;
 		delay1 = 1500;
 		delay2 = 1500;
 	}
@@ -47,7 +49,11 @@ public class betweenLevels extends BasicGameState{
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
 		// TODO Auto-generated method stub
+		if(!gameOver)
 		g.drawString("Lives Left: "+MFFdriver.marioLives, 300, 300);
+		else
+			g.drawString("Game Over", 300, 300);
+			
 	}
 
 	@Override
@@ -58,7 +64,7 @@ public class betweenLevels extends BasicGameState{
 		{
 			if(delay2 < 0){
 				if(MFFdriver.marioLives <= 0)
-				sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
+				gameOver = true;
 				else
 				sbg.enterState(MFFdriver.currentState);
 			}else

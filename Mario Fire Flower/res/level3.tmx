@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="99" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="bg1.tsx"/>
+ <tileset firstgid="397" source="customTiles.tsx"/>
+ <layer name="Tile Layer 1" width="25" height="99">
+  <data encoding="base64" compression="zlib">
+   eJzt2XOMHGEYgPHp3l3velfbtq62bdu2bdu2bdu2bdu2nv2j6V76ZrM7fZs0zST9ZTLJvV++ZDLPN+n6GYYRFMEQHCEQEqEQGmEQFuEQHr7wc3MmFmIjDuIiHuIjARIiERIjCZIipomZ9MiAjMiEzMiCrMiG7MiBnMiFdCZmiqIYiqMESqIUSqMMyqIcyqMCipiYqY06qIt6qI8GaIhGaIwmaIpmqGVipiM6oTO6oCu6oTt6oCd6oTf6oIOJmeEYgZEYhdEYg7EYh/GYgImYhGEmZuZiHuZjARZiERZjCZZiGZZjBeaYmNmMLdiKbdiOHdiJXdiNPdiLfdhkYuYkTuE0zuAszuE8LuAiLuEyruCEiZn7eICHeITHeIKneIbneIGXeIV7Jma+4hu+wwjEP9jgAU94ITC84YMvJmYm82dTjF/XqZiG6ZiBmZiF2cLzdnVmJVY5XFdjDdZiHdZjAzYKz9vVmf044HA9iEM4jCM4imM4LjxvV2eu4prD9Tpu4CZu4Tbu4K7wvF2deY03Dte3eIf3+ICP+ITPxu/P29UZHrthgwc84YXA8IYPghjunUvSehEQEZEQGVEQFdEQHTEM984lab1kSA5/pEBKpEJqpEFaw71zSVovN/IgL/IhPwqgIAqhsOHeuSStVxGVUBlVUBXVUB01UNNw71yS1muOFmiJVmiNNmiLdmhvuHcuSev1RT/0xwAMxCAMxhAMNdw7l6T1zHTK2bkkrWemU87OJWk9M51ydi5J65nplLNzSVrPTKecnUvSetq9klqi3SupJdq9klqi3SupJdq9klqi3SupJdq9klqi3SupJdq9klqi3SupJdq9klqi3SupTVavrF5ZvbJ6Ze+Vry1gr+z3jr2y3/9pr/xtAXtlv3fslf3+Z6+kbmj3SuqGdq+kbmj3SuqGdq+kbmj3SuqGdq+kbmj3SuqGdq+kbmj3SuqGdq+kbmh/X0nd0P6+snpl9crq1b/XK+13UOqG9jso7Vn7HZT2rP0OSnvWfgelPWu/g9Ketd9Bac/a76C0Z+13UNqz9jeDtGftbwZpz9rfDP/L/1Nbv6tZv6tZv6tZv6v9rV79AKKoxuA=
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="25" height="99">
+  <data encoding="base64" compression="zlib">
+   eJztmFkOwiAURSmf+u+wBP3Rf4cl6BYclqCL0YU4bMthAT4jJJWUCgUaLPckNwVC6XsXQksZAwC82XHG9jzsMw40/tHiGQPqO+TmdV1bGQvqu+TmdV3br9h9cKLxzqQL6crN4kgV1SugB17ZYbrvuOxPpvtO1f0pdrAmi4EvbsC/YuCLOfDKHHj1QfXBtp4SKeduC7wy45YxdheS5QfpmX33a3H7elu0dejaFZLlHqmv3DOqUB+Ltgldp0KyPCPNPc79isZaC8nyhrT9g/WVn49Q5OfDF/JcKOMPkYc8F8r4feQR4j+XSojzLOLWvzua8P/AN6pXLt9psb+zY4+vCmU5NTHfUMArrCUb4IceeONGk/1DbunGUzc2+cfgVQwx1B3PC47Ng3g=
+  </data>
+ </layer>
+ <layer name="properties" width="25" height="99">
+  <data encoding="base64" compression="zlib">
+   eJzt2EEOhSAMRVF1y67W3ThonBAwrQi0cE/C4Dswr08k5m8bgF6uXZbWecjS/i5dG6FFjueeXmb0jK706MpGe+54Pp+8Y0/m0Usd+sujFz260qMrkfZgXStZeXYrutLRvFuR/2+AiPo8op77UXKmyB1vr43053ea99695/vibaYZ522FrthLFvRRRjd1Zu6P2dbN05tlfg9decjQO88NrKxYFg==
+  </data>
+ </layer>
+</map>

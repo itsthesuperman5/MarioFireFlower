@@ -323,7 +323,7 @@ public class GameState extends BasicGameState{
 		float ship = spitVelocity*delta;
 		float fhip = marioFall*delta;
 		float eip = enemyVelocity*delta;
-		/*
+		
 		if(input.isKeyPressed(Input.KEY_2))
 			sbg.enterState(2);
 		if(input.isKeyPressed(Input.KEY_3))
@@ -331,7 +331,7 @@ public class GameState extends BasicGameState{
 		if(input.isKeyPressed(Input.KEY_4))
 			sbg.enterState(4);
 		if(input.isKeyPressed(Input.KEY_5))
-			sbg.enterState(5);*/
+			sbg.enterState(5);
 		
 		if(fireballs.isEmpty() || shotBound.isEmpty())
 			shooting = false;
